@@ -90,6 +90,7 @@ public class TodoController {
         return "index";
     }
 
+
     @GetMapping("/todo-due")
     public String todo_due(Model model){
         model.addAttribute("todos",todoService.findByAllOrderByDueDateAsc(false));

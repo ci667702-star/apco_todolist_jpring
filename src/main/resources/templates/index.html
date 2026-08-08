@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmln:th="http:www.thymeleaf.org" xmlns:xmln="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <form action="/search" method="get">
+        <input type="text" name="keyword" placeholder="검색어를 입력하세요." th:value="${keyword}">
+        <button type="submit">검색</button>
+
+    </form>
+
+    <form action="/add" method="post">
+        <input type="text" name="text" placeholder="할 일을 입력하세요">
+        <select name="priority">
+            <option value="LOW">낮음</option>
+            <option value="MEDIUM">보통</option>
+            <option value="HIGH">높음</option>
+        </select>
+        <input type="date" name="dueDate" required>
+        <button type="submit">추가</button>
+    </form>
+
+    <div>
+        <a href="/sort">전체</a>
+        <a href="/sort/priority?value=HIGH(keyword=${keyword})">높음</a>
+        <a href="@{/priority?value=MEDIUM(keyword=${keyword})}">보통</a>
+        <a href="@{/priority?value=LOW(keyword=${keyword})}">낮음</a>
+        <a href="@{/sort(keyword=${keyword})}">마감일 빠른 순</a>
+        <a href="@{/todo-due(keyword=${keyword})}">미완료 마감일순</a>
+    </div>
+    <hr>
+
+    <ul>
+        <li th:each = "todo :${todos}">
+            <span th:style="${todo.done} ?'text-decoration: line-through' : ''" th:text="${todo.text}"></span>
+            <span>
+                중요도:<strong th:text='${todo.priority}'></strong>
+            </span>
+            <span>
+                마감일:<strong th:text='${todo.dueDate}'></strong>
+            </span>
+              <a th:href ="@{'/toggle/' + ${todo.id}}">완료</a>
+              <a th:href="@{'/edit/' + ${todo.id}}">수정</a>
+              <a th:href="@{'/delete/' + ${todo.id}}">삭제</a>
+        </li>
+    </ul>
+</body>
+</html>

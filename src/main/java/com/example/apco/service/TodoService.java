@@ -59,7 +59,7 @@ public class TodoService {
     }
 
     public List<Todo> search(String text){
-        if (text==null || text.isBlank()){
+        if (text==null || text.trim().isEmpty()){
             return todoRepository.findAll();
         }
         return todoRepository.findByTextContaining(text);
@@ -74,7 +74,7 @@ public class TodoService {
     }
 
     public List<Todo> findByAllOrderByDueDateAsc(String keyword){
-        if (keyword == null || keyword.isBlank()) {
+        if (keyword == null || keyword.trim().isEmpty()) {
             return todoRepository.findByDoneOrderByDueDateAsc(false);
         }
         return todoRepository.findByTextContainingAndDoneOrderByDueDateAsc(keyword, false);
@@ -82,7 +82,7 @@ public class TodoService {
     }
 
     public List<Todo> searchSorted(String text){
-        if (text==null || text.isBlank()){
+        if (text==null || text.trim().isEmpty()){
             return todoRepository.findAllByOrderByDueDateAsc();
         }
         return todoRepository.findByTextContainingOrderByDueDateAsc(text);

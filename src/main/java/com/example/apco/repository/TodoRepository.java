@@ -10,7 +10,7 @@ public interface TodoRepository extends JpaRepository<Todo,Long> {
     List<Todo> findByTextContaining(String text);
     List<Todo> findAllByOrderByDueDateAsc();
     List<Todo> findByDoneOrderByDueDateAsc(boolean done);
-    List<Todo> findByPriority(String priority);
+    List<Todo> findByTextContainingAndPriority(String text,String priority);
     List<Todo> findByTextContainingOrderByDueDateAsc(String text);
     List<Todo> findByTextContainingAndDoneOrderByDueDateAsc(String text, boolean done);
 }

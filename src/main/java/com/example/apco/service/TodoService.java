@@ -65,12 +65,12 @@ public class TodoService {
         return todoRepository.findByTextContaining(text);
     }
 
-    public List<Todo> findByPriority(String priority){
-        return todoRepository.findByPriority(priority);
+    public List<Todo> findByPriority(String priority, String keyword){
+        return todoRepository.findByTextContainingAndPriority(keyword, priority);
     }
 
     public List<Todo> findAllSorted(String text){
-        return todoRepository.findByTextContainingOrderByDueDateAsc(text);
+        return todoRepository.findAll();
     }
 
     public List<Todo> findByAllOrderByDueDateAsc(String keyword){
@@ -85,7 +85,7 @@ public class TodoService {
         if (text==null || text.trim().isEmpty()){
             return todoRepository.findAllByOrderByDueDateAsc();
         }
-        return todoRepository.findByTextContainingOrderByDueDateAsc(text);
+        return todoRepository.findByTextContainingOrderByDueDateAsc(text.trim());
     }
 
 }

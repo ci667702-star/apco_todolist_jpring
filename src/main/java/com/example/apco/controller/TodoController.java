@@ -77,9 +77,8 @@ public class TodoController {
     }
 
     @GetMapping("/sort")
-    public String sort(@RequestParam(required = false, defaultValue = "") String keyword, Model model){
-        model.addAttribute("todos", todoService.searchSorted(keyword));
-        model.addAttribute("keyword", keyword);
+    public String sort(Model model){
+        model.addAttribute("todos", todoService.findAll());
         return "index";
     }
 
@@ -87,11 +86,17 @@ public class TodoController {
     public String priority(@RequestParam(required = false, defaultValue = "") String keyword,
                            @RequestParam("value") String priority,
                            Model model){
-        model.addAttribute("todos", todoService.findByPriority(priority));
+        model.addAttribute("todos", todoService.findByPriority(priority, keyword));
         model.addAttribute("keyword", keyword);
         return "index";
     }
 
+    @GetMapping("/sort/duedate")
+    public String duedate(@RequestParam(required = false, defaultValue = "") String keyword, Model model){
+        model.addAttribute("todos", todoService.searchSorted(keyword));
+        model.addAttribute("keyword", keyword);
+        return "index";
+    }
 
     @GetMapping("/todo-due")
     public String todo_due(@RequestParam(required = false, defaultValue = "") String keyword, Model model){

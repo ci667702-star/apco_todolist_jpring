@@ -22,14 +22,13 @@
         <input type="date" name="dueDate" required>
         <button type="submit">추가</button>
     </form>
-
     <div>
-        <a href="/sort">전체</a>
-        <a href="/sort/priority?value=HIGH(keyword=${keyword})">높음</a>
-        <a href="@{/priority?value=MEDIUM(keyword=${keyword})}">보통</a>
-        <a href="@{/priority?value=LOW(keyword=${keyword})}">낮음</a>
-        <a href="@{/sort(keyword=${keyword})}">마감일 빠른 순</a>
-        <a href="@{/todo-due(keyword=${keyword})}">미완료 마감일순</a>
+        <a th:href="@{/sort(keyword=${keyword})}">전체</a>
+        <a th:href="@{/sort/priority(value='HIGH', keyword=${keyword})}">높음</a>
+        <a th:href="@{/sort/priority(value='MEDIUM', keyword=${keyword})}">보통</a>
+        <a th:href="@{/sort/priority(value='LOW', keyword=${keyword})}">낮음</a>
+        <a th:href="@{/sort(keyword=${keyword})}">마감일 빠른 순</a>
+        <a th:href="@{/todo-due(keyword=${keyword})}">미완료 마감일순</a>
     </div>
     <hr>
 

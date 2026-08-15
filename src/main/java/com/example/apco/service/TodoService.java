@@ -73,8 +73,12 @@ public class TodoService {
         return todoRepository.findByTextContainingOrderByDueDateAsc(text);
     }
 
-    public List<Todo> findByAllOrderByDueDateAsc(boolean done){
-        return todoRepository.findByDoneOrderByDueDateAsc(done);
+    public List<Todo> findByAllOrderByDueDateAsc(String keyword){
+        if (keyword == null || keyword.isBlank()) {
+            return todoRepository.findByDoneOrderByDueDateAsc(false);
+        }
+        return todoRepository.findByTextContainingAndDoneOrderByDueDateAsc(keyword, false);
+
     }
 
     public List<Todo> searchSorted(String text){

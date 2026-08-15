@@ -72,28 +72,31 @@ public class TodoController {
                                 String keyword,
                                 Model model){
         model.addAttribute("todos", todoService.search(keyword));
-        model.addAttribute("word", keyword);
+        model.addAttribute("keyword", keyword);
         return "index";
     }
 
     @GetMapping("/sort")
-    public String sort(@RequestParam(required = false, defaultValue = "") String text, Model model){
-        model.addAttribute("todos", todoService.searchSorted(text));
+    public String sort(@RequestParam(required = false, defaultValue = "") String keyword, Model model){
+        model.addAttribute("todos", todoService.searchSorted(keyword));
+        model.addAttribute("keyword", keyword);
         return "index";
     }
 
     @GetMapping("/sort/priority")
-    public String priority(@RequestParam(required = false, defaultValue = "") String text,
+    public String priority(@RequestParam(required = false, defaultValue = "") String keyword,
                            @RequestParam("value") String priority,
                            Model model){
         model.addAttribute("todos", todoService.findByPriority(priority));
+        model.addAttribute("keyword", keyword);
         return "index";
     }
 
 
     @GetMapping("/todo-due")
-    public String todo_due(Model model){
-        model.addAttribute("todos",todoService.findByAllOrderByDueDateAsc(false));
+    public String todo_due(@RequestParam(required = false, defaultValue = "") String keyword, Model model){
+        model.addAttribute("todos",todoService.findByAllOrderByDueDateAsc(keyword));
+        model.addAttribute("keyword", keyword);
         return "index";
     }
 

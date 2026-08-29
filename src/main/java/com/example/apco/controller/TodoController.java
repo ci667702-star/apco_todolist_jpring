@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
@@ -39,16 +40,27 @@ public class TodoController {
 
     //Delete
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id){
+    public String delete(@PathVariable Long id,
+                         @RequestParam(defaultValue = "") String keyword,
+                         @RequestParam(defaultValue = "dueDateAsc") String sortType,
+                         RedirectAttributes redirectAttributes) {
+
         todoService.deleteTodo(id);
+        redirectAttributes.addAttribute("keyword", keyword);
+        redirectAttributes.addAttribute("sortType", sortType);
         return "redirect:/";
     }
 
     //update
     @GetMapping("/toggle/{id}")
-    public String toggle(@PathVariable Long id){
+    public String toggle(@PathVariable Long id,
+                         @RequestParam(defaultValue = "") String keyword,
+                         @RequestParam(defaultValue = "dueDateAsc") String sortType,
+                         RedirectAttributes redirectAttributes){
         todoService.toggleTodo(id);
-        return "redirect:/";
+        redirectAttributes.addAttribute("keyword", keyword);
+        redirectAttributes.addAttribute("sortType", sortType);
+        return "redirect:/sort";
     }
 
     @GetMapping("/edit/{id}")
@@ -82,15 +94,6 @@ public class TodoController {
 //        model.addAttribute("todos", todoService.findAll());
 //        return "index";
 //    }
-
-    @GetMapping("/sort/priority")
-    public String priority(@RequestParam(required = false, defaultValue = "") String keyword,
-                           @RequestParam("value") String priority,
-                           Model model){
-        model.addAttribute("todos", todoService.findByPriority(priority, keyword));
-        model.addAttribute("keyword", keyword);
-        return "index";
-    }
 
     @GetMapping("/sort")
     public String duedate(@RequestParam(required = false, defaultValue = "") String keyword,

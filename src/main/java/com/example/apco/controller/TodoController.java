@@ -71,16 +71,17 @@ public class TodoController {
     public String search(@RequestParam
                                 String keyword,
                                 Model model){
-        model.addAttribute("todos", todoService.search(keyword));
+        String sortType = "dueDateAsc";
+        model.addAttribute("todos", todoService.searchAndSrt(keyword, sortType));
         model.addAttribute("keyword", keyword);
         return "index";
     }
 
-    @GetMapping("/sort")
-    public String sort(Model model){
-        model.addAttribute("todos", todoService.findAll());
-        return "index";
-    }
+//    @GetMapping("/sort")
+//    public String sort(Model model){
+//        model.addAttribute("todos", todoService.findAll());
+//        return "index";
+//    }
 
     @GetMapping("/sort/priority")
     public String priority(@RequestParam(required = false, defaultValue = "") String keyword,
@@ -91,16 +92,21 @@ public class TodoController {
         return "index";
     }
 
-    @GetMapping("/sort/duedate")
-    public String duedate(@RequestParam(required = false, defaultValue = "") String keyword, Model model){
-        model.addAttribute("todos", todoService.searchSorted(keyword));
+    @GetMapping("/sort")
+    public String duedate(@RequestParam(required = false, defaultValue = "") String keyword,
+                          @RequestParam(defaultValue = "dueDateAsc") String sortType,
+                          Model model){
+        model.addAttribute("todos", todoService.searchAndSrt(keyword, sortType));
         model.addAttribute("keyword", keyword);
+        model.addAttribute("sortType", sortType);
         return "index";
     }
 
     @GetMapping("/todo-due")
-    public String todo_due(@RequestParam(required = false, defaultValue = "") String keyword, Model model){
-        model.addAttribute("todos",todoService.findByAllOrderByDueDateAsc(keyword));
+    public String todo_due(@RequestParam(required = false, defaultValue = "") String keyword,
+                           @RequestParam(defaultValue = "dueDateAsc") String sortType,
+                           Model model){
+        model.addAttribute("todos",todoService.searchAndSrt(keyword, sortType));
         model.addAttribute("keyword", keyword);
         return "index";
     }

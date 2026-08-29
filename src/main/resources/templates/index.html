@@ -22,14 +22,25 @@
         <input type="date" name="dueDate" required>
         <button type="submit">추가</button>
     </form>
-    <div>
-        <a th:href="@{/sort(keyword=${keyword})}">전체</a>
-        <a th:href="@{/sort/priority(value='HIGH', keyword=${keyword})}">높음</a>
-        <a th:href="@{/sort/priority(value='MEDIUM', keyword=${keyword})}">보통</a>
-        <a th:href="@{/sort/priority(value='LOW', keyword=${keyword})}">낮음</a>
-        <a th:href="@{/sort/duedate(keyword=${keyword})}">마감일 빠른 순</a>
-        <a th:href="@{/todo-due(keyword=${keyword})}">미완료 마감일순</a>
-    </div>
+    <form action="/sort" method="get">
+        <input type="hidden" name="keyword" th:value = "${keyword}">
+        <select name="sortType">
+            <option value="dueDateAsc">마감일 빠른 순</option>
+            <option value="dueDateDesc">마감일 늦은 순</option>
+            <option value="latest">최신 등록순</option>
+            <option value="textAsc">가나다순</option>
+        </select>
+        <button type="submit">정렬</button>
+    </form>
+
+<!--    <div>-->
+<!--        <a th:href="@{/sort}">전체</a>-->
+<!--        <a th:href="@{/sort/priority(value='HIGH', keyword=${keyword})}">높음</a>-->
+<!--        <a th:href="@{/sort/priority(value='MEDIUM', keyword=${keyword})}">보통</a>-->
+<!--        <a th:href="@{/sort/priority(value='LOW', keyword=${keyword})}">낮음</a>-->
+<!--        <a th:href="@{/sort/duedate(keyword=${keyword})}">마감일 빠른 순</a>-->
+<!--        <a th:href="@{/todo-due(keyword=${keyword})}">미완료 마감일순</a>-->
+<!--    </div>-->
     <hr>
 
     <ul>

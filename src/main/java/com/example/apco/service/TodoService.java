@@ -3,6 +3,7 @@ package com.example.apco.service;
 import com.example.apco.model.Todo;
 import com.example.apco.repository.TodoRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -62,30 +63,30 @@ public class TodoService {
         if (text==null || text.trim().isEmpty()){
             return todoRepository.findAll();
         }
-        return todoRepository.findByTextContaining(text);
+        return todoRepository.findByTextContaining(text.trim());
     }
 
     public List<Todo> findByPriority(String priority, String keyword){
-        return todoRepository.findByTextContainingAndPriority(keyword, priority);
+        return todoRepository.findByTextContainingAndPriority(keyword.trim(), priority);
     }
 
-    public List<Todo> findAllSorted(String text){
-        return todoRepository.findAll();
-    }
+    public List<Todo> searchAndSrt(String text, String sortType){
+        Sort sort = null;
+        if("dueDateDesc".equals(sortType)){
+            sort=Sort.by(Sort.Direction.DESC, "dueDate");
+        } else if ("latest".equals(sortType)) {
+            sort=Sort.by(Sort.Direction.DESC, "id");
+        } else if ("dueDateAsc".equals(sortType)) {
+            sort=Sort.by(Sort.Direction.ASC, "dueDate");
 
-    public List<Todo> findByAllOrderByDueDateAsc(String keyword){
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return todoRepository.findByDoneOrderByDueDateAsc(false);
         }
-        return todoRepository.findByTextContainingAndDoneOrderByDueDateAsc(keyword, false);
-
-    }
-
-    public List<Todo> searchSorted(String text){
-        if (text==null || text.trim().isEmpty()){
-            return todoRepository.findAllByOrderByDueDateAsc();
+        if (text==null || text.trim().isEmpty()) {
+            return todoRepository.findAll();
         }
-        return todoRepository.findByTextContainingOrderByDueDateAsc(text.trim());
+        return todoRepository.findByTextContaining(text.trim(), sort);
+
     }
+
+//    public List<Todo>
 
 }

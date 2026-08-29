@@ -23,14 +23,15 @@
         <button type="submit">추가</button>
     </form>
     <form action="/sort" method="get">
-        <input type="hidden" name="keyword" th:value = "${keyword}">
+        <input type="text" name="keyword" th:value = "${keyword}">
         <select name="sortType">
-            <option value="dueDateAsc">마감일 빠른 순</option>
-            <option value="dueDateDesc">마감일 늦은 순</option>
-            <option value="latest">최신 등록순</option>
-            <option value="textAsc">가나다순</option>
+            <option value="dueDateAsc" th:selected="${sortType == 'dueDateAsc'}">마감일 빠른 순</option>
+            <option value="dueDateDesc" th:selected="${sortType == 'dueDateDesc'}">마감일 늦은 순</option>
+            <option value="latest" th:selected="${sortType == 'latest'}">최신 등록순</option>
+            <option value="textAsc" th:selected="${sortType == 'textAsc'}">가나다순</option>
         </select>
-        <button type="submit">정렬</button>
+<!--        th:selected는 현재값  표시-->
+        <button type="submit">검색 - 정렬</button>
     </form>
 
 <!--    <div>-->

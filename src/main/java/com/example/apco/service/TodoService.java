@@ -81,7 +81,7 @@ public class TodoService {
 
         }
         if (text==null || text.trim().isEmpty()) {
-            return todoRepository.findAll();
+            return todoRepository.findAll(sort);
         }
         return todoRepository.findByTextContaining(text.trim(), sort);
 

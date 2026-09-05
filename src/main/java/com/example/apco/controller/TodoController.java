@@ -5,16 +5,22 @@ import com.example.apco.service.TodoService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
 @Controller
 public class TodoController {
+    private String redirectToList(
+            String keyword,
+            String sortType,
+            RedirectAttributes redirectAttributes
+            ) {
+        redirectAttributes.addAttribute("keyword", keyword);
+        redirectAttributes.addAttribute("sortType", sortType);
+        return "redirect:/sort";
+    }
 
     private final TodoService todoService;
     public TodoController(TodoService todoService){
@@ -39,28 +45,33 @@ public class TodoController {
     }
 
     //Delete
-    @GetMapping("/delete/{id}")
+    // POST /delete/3
+    // Todo 상태 변경(toggle, delete)
+    // 302 redirect
+    // GET /sort?keyword="keyword"&sortType="sortType"
+    // 목록 화면 출력
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id,
                          @RequestParam(defaultValue = "") String keyword,
                          @RequestParam(defaultValue = "dueDateAsc") String sortType,
                          RedirectAttributes redirectAttributes) {
-
+        //get은 원칙적으로 데이터를 조회하는 안전한 요청이어야한다.
+        //서버 상태를 변경하는 작업에는 사용하지 않는 것이 맞다.
+        //post는 서버에 데이터를 보내 상태 변경이나 부수 효과를 요청할 때 사용한다.
         todoService.deleteTodo(id);
-        redirectAttributes.addAttribute("keyword", keyword);
-        redirectAttributes.addAttribute("sortType", sortType);
-        return "redirect:/";
+
+        return redirectToList(keyword, sortType, redirectAttributes);
+
     }
 
     //update
-    @GetMapping("/toggle/{id}")
+    @PostMapping("/toggle/{id}")
     public String toggle(@PathVariable Long id,
                          @RequestParam(defaultValue = "") String keyword,
                          @RequestParam(defaultValue = "dueDateAsc") String sortType,
                          RedirectAttributes redirectAttributes){
         todoService.toggleTodo(id);
-        redirectAttributes.addAttribute("keyword", keyword);
-        redirectAttributes.addAttribute("sortType", sortType);
-        return "redirect:/sort";
+        return redirectToList(keyword, sortType, redirectAttributes);
     }
 
     @GetMapping("/edit/{id}")
@@ -89,12 +100,6 @@ public class TodoController {
         return "index";
     }
 
-//    @GetMapping("/sort")
-//    public String sort(Model model){
-//        model.addAttribute("todos", todoService.findAll());
-//        return "index";
-//    }
-
     @GetMapping("/sort")
     public String duedate(@RequestParam(required = false, defaultValue = "") String keyword,
                           @RequestParam(defaultValue = "dueDateAsc") String sortType,
@@ -102,15 +107,6 @@ public class TodoController {
         model.addAttribute("todos", todoService.searchAndSrt(keyword, sortType));
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortType", sortType);
-        return "index";
-    }
-
-    @GetMapping("/todo-due")
-    public String todo_due(@RequestParam(required = false, defaultValue = "") String keyword,
-                           @RequestParam(defaultValue = "dueDateAsc") String sortType,
-                           Model model){
-        model.addAttribute("todos",todoService.searchAndSrt(keyword, sortType));
-        model.addAttribute("keyword", keyword);
         return "index";
     }
 

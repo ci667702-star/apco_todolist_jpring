@@ -1,4 +1,4 @@
-FROM ecplipse-termurin:17-jdk AS build
+FROM ecplipse-temurin:17-jdk AS build
 WORKDIR /app
 
 COPY . .
@@ -6,11 +6,11 @@ COPY . .
 RUN chmod +x gradlew
 RUN ./gradle bootJar --no-daemon
 
-FROM eclipse-termurin:17-jre
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
-COPY --from-build /app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 10000
 ENTRYPOINT ["java", "-jar", "app.jar"]

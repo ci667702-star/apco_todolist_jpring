@@ -59,16 +59,16 @@ public class TodoService {
         todoRepository.save(todo);
     }
 
-    public List<Todo> search(String text){
-        if (text==null || text.trim().isEmpty()){
-            return todoRepository.findAll();
-        }
-        return todoRepository.findByTextContaining(text.trim());
-    }
-
-    public List<Todo> findByPriority(String priority, String keyword){
-        return todoRepository.findByTextContainingAndPriority(keyword.trim(), priority);
-    }
+//    public List<Todo> search(String text){
+//        if (text==null || text.trim().isEmpty()){
+//            return todoRepository.findAll();
+//        }
+//        return todoRepository.findByTextContaining(text.trim());
+//    }
+//
+//    public List<Todo> findByPriority(String priority, String keyword){
+//        return todoRepository.findByTextContainingAndPriority(keyword.trim(), priority);
+//    }
 
     public List<Todo> searchAndSrt(String text, String sortType){
         Sort sort = null;
@@ -86,7 +86,4 @@ public class TodoService {
         return todoRepository.findByTextContaining(text.trim(), sort);
 
     }
-
-//    public List<Todo>
-
 }

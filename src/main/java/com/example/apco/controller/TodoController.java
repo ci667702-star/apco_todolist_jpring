@@ -68,26 +68,36 @@ public class TodoController {
     @PostMapping("/toggle/{id}")
     public String toggle(@PathVariable Long id,
                          @RequestParam(defaultValue = "") String keyword,
-                         @RequestParam(defaultValue = "dueDateAsc") String sortType,
+                         @RequestParam(defaultValue = "dueDateAsc") String sortType, //defaultValue를 적용 시켜야하는 이유
+                                                                                     // 검색 화면이 아닌 곳에서 수정 화면에 접근해도 400 오류가 발생하지 앟기 위해
                          RedirectAttributes redirectAttributes){
         todoService.toggleTodo(id);
         return redirectToList(keyword, sortType, redirectAttributes);
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model){
+    public String editForm(@PathVariable Long id,
+                           @RequestParam(defaultValue = "") String keyword,
+                           @RequestParam(defaultValue = "dueDateAsc") String sortType,
+                           Model model){
         Todo todo = todoService.findById(id);
         model.addAttribute("todo", todo);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("sortType", sortType);
         return "edit";
     }
 
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id,
+                       @RequestParam(defaultValue = "") String keyword,
+                       @RequestParam(defaultValue = "dueDateAsc") String sortType,
                        @RequestParam String text,
                        @RequestParam String priority,
-                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate){
+                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate,
+
+                       RedirectAttributes redirectAttributes){
         todoService.updateTodo(id, text, priority, dueDate);
-        return "redirect:/";
+        return redirectToList(keyword, sortType, redirectAttributes);
     }
 
     @GetMapping("/search")

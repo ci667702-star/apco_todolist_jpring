@@ -8,6 +8,17 @@
     <body>
         <h1>TODO 수정</h1>
         <form th:action="@{'/edit/' + ${todo.id}}" method="post">
+            <input
+                    type="hidden"
+                    name="keyword"
+                    th:value = "${keyword}"
+            >
+            <input
+                    type="hidden"
+                    name="sortType"
+                    th:value = "${sortType}"
+            >
+
             <input type="text" name="text" th:value="${todo.text}" required>
             <select name = "priority">
                 <option value="LOW" th:selected = "${todo.priority == 'LOW'}">낮음</option>
@@ -15,8 +26,14 @@
                 <option value="HIGH" th:selected = "${todo.priority == 'HIGH'}">높음</option>
             </select>
             <input type="date" name="dueDate" th:value = "${todo.dueDate}" required>
+
             <button type="submit">수정 완료</button>
         </form>
-        <a href="/">돌아가기</a>
+        <a th:href="@{/sort(keyword=${keyword}, sortType=${sortType})}">돌아가기</a>
     </body>
+<!-- hidden 화면에 보이지 않느넫 왜 쓰는 걸까?
+    사용자가 직접 수정할 필요는 없지만 다음 요청까ㅣㅈ 전달 해야하는 값이기 떄문에
+    controller로
+
+    -->
 </html>

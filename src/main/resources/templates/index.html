@@ -67,7 +67,12 @@
                 <button type="submit">완료</button>
             </form>
 
-              <a th:href="@{'/edit/' + ${todo.id}}">수정</a>
+            <a th:href="@{/edit/{id}(
+                            id=${todo.id},
+                            keyword=${keyword},
+                            sortType=${sortType})}">
+                수정
+            </a>
 
             <form th:action="@{/delete/{id}(id=${todo.id})}"
                   method="post"
@@ -83,7 +88,6 @@
                         name="sortType"
                         th:value = "${sortType}"
                 >
-
                 <button type="submit">삭제</button>
             </form>
 
